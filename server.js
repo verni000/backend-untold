@@ -1,5 +1,8 @@
-
 require('dotenv').config();
+
+const isProduction = process.env.NODE_ENV === 'production';
+console.log(`🟢 Running in ${isProduction ? 'production' : 'development'} mode`);
+
 const bcrypt = require('bcrypt');
 const express = require('express');
 const path = require('path');
@@ -10,14 +13,22 @@ const app = express();
 app.use(express.static(path.join(__dirname, '../frontend')));
 app.use(bodyParser.json());
 
-const pool = new Pool({
-  host: process.env.DB_HOST,
-  port: +process.env.DB_PORT,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASSWORD,
-  database: process.env.DB_NAME,
-});
-
+const pool = new Pool(
+  isProduction
+    ? {
+        connectionString: process.env.DATABASE_URL,
+        ssl: {
+          rejectUnauthorized: false,
+        },
+      }
+    : {
+        host: 'localhost',
+        port: 5432,
+        user: 'verr',
+        password: 'G6h4trichk',
+        database: 'gamedb',
+      }
+);
 pool
   .query('SELECT NOW()')
   .then(r => console.log('✅ Postgres connected at', r.rows[0].now))
@@ -62,3 +73,5 @@ app.post('/login', async (req, res) => {
 });
 
 app.listen(4000, () => console.log('Server jalan di port 4000'));
+
+ 
