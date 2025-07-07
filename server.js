@@ -15,11 +15,11 @@ app.use(bodyParser.json());
 
 const pool = new Pool(
   isProduction
-    ? {
-        connectionString: process.env.DATABASE_URL,
-        ssl: {
-          rejectUnauthorized: false,
-        },
+  ? {
+      connectionString: process.env.DATABASE_URL,
+      ssl: { rejectUnauthorized: false },
+    }
+
       }
     : {
         host: 'localhost',
