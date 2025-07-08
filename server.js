@@ -13,6 +13,14 @@ const app = express();
 app.use(express.static(path.join(__dirname, '../frontend')));
 app.use(bodyParser.json());
 
+const cors = require('cors');
+
+app.use(cors({
+  origin: ['https://popantree.netlify.app/'],
+  credentials: true
+}));
+
+
 const pool = new Pool(
   isProduction
   ? {
