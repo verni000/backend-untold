@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 const cors = require('cors');
 
 app.use(cors({
-  origin: ['https://popantree.netlify.app/'],
+  origin: ['https://popantree.netlify.app'],
   credentials: true
 }));
 
@@ -78,6 +78,7 @@ app.post('/login', async (req, res) => {
   }
 });
 
-app.listen(4000, () => console.log('Server jalan di port 4000'));
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => console.log(`🚀 Server jalan di port ${PORT}`));
 
  
